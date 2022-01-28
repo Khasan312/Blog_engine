@@ -2,7 +2,6 @@ from django import forms
 from .models import Tag, Post
 from django.core.exceptions import ValidationError
 
-
 class TagForm(forms.ModelForm):
     class Meta:
         model = Tag
@@ -10,18 +9,17 @@ class TagForm(forms.ModelForm):
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'slug': forms.TextInput(attrs={'class': 'form-control'}),
+            'slug': forms.TextInput(attrs={'class': 'form-control'})
         }
 
     def clean_slug(self):
         new_slug = self.cleaned_data['slug'].lower()
 
         if new_slug == 'create':
-            raise ValidationError('slug may not be "create')
+            raise ValidationError('Slug may not be "Create"')
         if Tag.objects.filter(slug__iexact=new_slug).count():
-            raise ValidationError('Slug must be unique. We have "{}" slug already'.format(new_slug))
+            raise ValidationError('Slug must be unique.We have "{}" slug already'.format(new_slug))
         return new_slug
-
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -35,12 +33,12 @@ class PostForm(forms.ModelForm):
             'tags': forms.SelectMultiple(attrs={'class': 'form-control'}),
         }
 
-    def clean_slug(self):
-        new_slug = self.cleaned_data['slug'].lower()
+        def clean_slug(self):
+            new_slug = self.cleaned_data['slug'].lower()
 
-        if new_slug == 'create':
-            raise ValidationError('slug may not be "create')
-        return new_slug
-
-
+            if new_slug == 'create':
+                raise ValidationError('Slug may not be "Create"')
+            if Tag.objects.filter(slug__iexact=new_slug).count():
+                raise ValidationError('Slug must be unique.We have "{}" slug already'.format(new_slug))
+            return new_slug
 

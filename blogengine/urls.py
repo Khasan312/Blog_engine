@@ -16,9 +16,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
-from .views import hello
+
+# from .views import hello
+
+
+# http://127.0.0.1:5000/blog/some-title
+
+from .views import redirect_blog
 
 urlpatterns = [
+    path('', redirect_blog),
     path('admin/', admin.site.urls),
-    path('blog/', include('blog.urls'))
-]
+    path('blog/', include('blog.urls')),
+    ]
+
